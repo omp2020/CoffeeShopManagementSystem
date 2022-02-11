@@ -1,0 +1,204 @@
+<?php 
+  session_start();
+  if(!isset($_SESSION["login"])) {
+    header('Location: '. temp, true);
+    exit();
+  }
+?>
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Admin Dashboard | List Order</title>
+    <link rel="apple-touch-icon" href="<?php echo temp ?>/assets/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/bootstrap-admin-template/robust/app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/forms/icheck/icheck.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/forms/icheck/custom.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/charts/morris.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/extensions/unslider.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/weather-icons/climacons.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN ROBUST CSS-->
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/app.min.css">
+    <!-- END ROBUST CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/core/menu/menu-types/vertical-compact-menu.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/core/colors/palette-gradient.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/core/colors/palette-climacon.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/css/pages/users.min.css">
+    <!-- END Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/app-assets/fonts/feather/style.min.css">
+    <!-- BEGIN Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="<?php echo temp ?>/assets/css/style.css">
+    <!-- END Custom CSS-->
+  </head>
+  <body class="vertical-layout vertical-compact-menu 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-compact-menu" data-col="2-columns">
+
+    <!-- fixed-top-->
+    <?php
+      $name = "Om Patel"; include '_navbar.php'; include '_sidebar.php';?>
+    <div class="app-content content">
+      <div class="content-wrapper">
+        <div class="content-header row">
+          <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title">Order Details</h3>
+          </div>
+        </div>
+        <div class="row" id="header-styling">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Orders</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+            </div>
+            <div class="card-content collapse show">
+              <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered file-export">
+                            <thead>
+                              <tr>
+                                <th>Id</th>
+                                <th>Customer Name</th>
+                                <th>Price</th>
+                                <th>Employee Name</th>
+                                <th>Date | Time</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php $sql = "SELECT
+                                              ordertime.id as id,
+                                              ordertime.price as price,
+                                              employee.name as empname,
+                                              customer.name as custname,
+                                              ordertime.datetime
+                                            FROM ordertime
+                                            JOIN employee
+                                              ON employee.id = ordertime.empid
+                                            JOIN customer
+                                              ON customer.id = ordertime.custid;";
+                              $result = $conn->query($sql);
+                              if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {?>
+                                <tr id="<?php echo $row['id']?>">
+                                  <td><?php echo $row['id']?></td>
+                                  <td><?php echo $row['custname']?></td>
+                                  <td><?php echo $row['price']?></td>
+                                  <td><?php echo $row['empname']?></td>
+                                  <td><?php echo $row['datetime']?></td>
+                                </tr>
+                            <?php    }
+                              }
+                              else {
+                                echo '<td colspan="6">No Customer data available</td>';
+                              }
+                              ?>
+                            </tbody>
+                            <tfoot>
+                              <tr>
+                                <th>Id</th>
+                                <th>Customer Name</th>
+                                <th>Price</th>
+                                <th>Employee Name</th>
+                                <th>Date | Time</th>
+                              </tr>
+                            </tfoot>
+                        </table>
+                </div>
+                            </div> 
+            </div>
+        </div>
+    </div>
+</div>
+      </div>
+    </div>
+    <!-- BEGIN VENDOR JS-->
+    <script src="<?php echo temp ?>/assets/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN VENDOR JS-->
+    <script src="<?php echo temp ?>/assets/app-assets/vendors/js/extensions/sweetalert.min.js"></script>
+    <script src="<?php echo temp ?>/assets/app-assets/js/scripts/extensions/sweet-alerts.min.js"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="<?php echo temp ?>/assets/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="<?php echo temp ?>/assets/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js"></script>
+    <!-- END PAGE VENDOR JS-->
+    <script>
+      $(".file-export").DataTable({
+      dom: "Bfrtip",
+      buttons: [{
+            extend: 'print',
+            text: 'Print Order Details'
+      }]
+      });
+      $(
+        ".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel"
+      ).addClass("btn btn-primary");
+      $('.delete').on('click',function(){
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this !!",
+            icon: "warning",
+            buttons: {
+                    cancel: {
+                        text: "No, cancel this!",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: false,
+                    },
+                    confirm: {
+                        text: "Yes, delete it!",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: false
+                    }
+            }
+        })
+        .then((isConfirm) => {
+            if (isConfirm) {
+                var id = $(this).closest('tr').attr('id');
+                $.ajax({
+                  type: 'POST',
+                  url: '/miniproject/api',
+                  data:  {id: id, type: 'DelCust'},
+                  success: function(data){
+                    console.log(data);
+                    data = JSON.parse(data);
+                    if(data["error"] == 1) {
+                      swal({
+                        title: 'Error in deleting data',
+                        icon: 'warning',
+                        text: 'I will close in 2 seconds.',
+                        button: true
+                      });       
+                    }
+                    else {
+                      swal("Deleted!", "The details are deleted successfully", "success").then(() => {
+                        document.location.reload();
+                      });
+                    }
+                  },
+                  error: function(data){
+                    swal({
+                        title: 'Error in sending Request',
+                        icon: 'warning',
+                        timer: 2000,
+                        button: false
+                      });
+                  }
+                });
+            } else {
+                swal("Cancelled", "The details are not deleted", "error");
+            }
+        });
+
+      });
+    </script>
+  </body>
+
+
+</html>
